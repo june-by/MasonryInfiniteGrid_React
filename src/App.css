@@ -1,17 +1,25 @@
 .grid_wrapper {
-  display: grid;
+  display: flex;
+  flex-flow: wrap;
   position: relative;
   padding: 0;
+  list-style: none;
 }
 
 .grid_item {
-  background: linear-gradient(90deg, #f2f5f9 2%, #fafcff 60%, #f2f5f9 100%);
   animation: placeHolderShimmer 12s linear infinite forwards;
   width: 25%;
-  margin: 0 8px 16px;
+}
+
+.grid_item_content {
+  background: linear-gradient(90deg, #f2f5f9 2%, #fafcff 60%, #f2f5f9 100%);
+  padding: 0 8px 16px;
   display: flex;
+  background-clip: content-box;
   justify-content: center;
   align-items: center;
+  width: calc(100% - 16px);
+  height: calc(100% - 16px);
 }
 
 @keyframes placeHolderShimmer {

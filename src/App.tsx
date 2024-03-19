@@ -11,8 +11,8 @@ function createArr(length: number) {
 function App() {
   return (
     <MasonryInfiniteGrid tagName="ul" className="grid_wrapper">
-      {createArr(20).map((v) => (
-        <GridItem key={v} />
+      {createArr(20).map((v, index) => (
+        <GridItem key={v} index={index} />
       ))}
     </MasonryInfiniteGrid>
   );

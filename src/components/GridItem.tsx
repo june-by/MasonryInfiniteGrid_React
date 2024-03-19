@@ -1,9 +1,17 @@
 import React from "react";
 
-const GridItem = () => {
+interface Props {
+  index: number;
+}
+
+const GridItem = ({ index }: Props) => {
   const randomIdx = Math.floor(Math.random() * 3 + 1);
 
-  return <li className={`grid_item height_${randomIdx}`}>GridItem</li>;
+  return (
+    <li className={`grid_item height_${randomIdx}`}>
+      <div className="grid_item_content">GirdItem{index}</div>
+    </li>
+  );
 };
 
 export default GridItem;
