@@ -1,9 +1,14 @@
 import React, { PropsWithChildren } from "react";
 
-interface Props {}
+interface Props {
+  tagName?: keyof JSX.IntrinsicElements;
+}
 
-const MasonryInfiniteGrid = ({ children }: PropsWithChildren<Props>) => {
-  return <div>{children}</div>;
+const MasonryInfiniteGrid = ({
+  children,
+  tagName: Wrapper = "div",
+}: PropsWithChildren<Props>) => {
+  return <Wrapper>{children}</Wrapper>;
 };
 
 export default MasonryInfiniteGrid;

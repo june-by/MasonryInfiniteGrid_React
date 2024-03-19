@@ -10,7 +10,7 @@ function createArr(length: number) {
 
 function App() {
   return (
-    <MasonryInfiniteGrid>
+    <MasonryInfiniteGrid tagName="ul">
       {createArr(20).map((v) => (
         <GridItem key={v} />
       ))}
