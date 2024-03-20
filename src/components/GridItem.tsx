@@ -5,7 +5,7 @@ interface Props {
 }
 
 const GridItem = ({ index }: Props) => {
-  const randomIdx = Math.floor(Math.random() * 3 + 1);
+  const randomIdx = Math.floor(Math.random() * 6 + 1);
 
   return (
     <li className={`grid_item height_${randomIdx}`}>
