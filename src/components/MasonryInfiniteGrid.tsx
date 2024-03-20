@@ -9,6 +9,7 @@ import { useResize } from "../hooks";
 
 type Props<T extends keyof JSX.IntrinsicElements> = {
   tagName?: T;
+  resizeDebounce?: number;
   className?: string;
 } & JSX.IntrinsicElements[T];
 
@@ -27,6 +28,7 @@ const getNumOfGridColumn = (gridItemWidth: number) => {
 const MasonryInfiniteGrid = <T extends keyof JSX.IntrinsicElements>({
   children,
   tagName: Wrapper = "div" as T,
+  resizeDebounce = 1000,
   ...rest
 }: PropsWithChildren<Props<T>>) => {
   const gridWrapperRef = useRef<HTMLElement | null>(null);
@@ -78,7 +80,7 @@ const MasonryInfiniteGrid = <T extends keyof JSX.IntrinsicElements>({
     gridWrapperElement.style.visibility = "";
   }, [calculateGridItemsPos]);
 
-  useResize(calculateGridItemsPos);
+  useResize(calculateGridItemsPos, resizeDebounce);
 
   const GridWrapperComponent = Wrapper as ElementType;
 
