@@ -10,15 +10,17 @@ function createArr(length: number) {
 
 function App() {
   return (
-    <MasonryInfiniteGrid
-      tagName="ul"
-      className="grid_wrapper"
-      resizeDebounce={500}
-    >
-      {createArr(20).map((v, index) => (
-        <GridItem key={v} index={index} />
-      ))}
-    </MasonryInfiniteGrid>
+    <div className="grid_container">
+      <MasonryInfiniteGrid
+        tagName="ul"
+        className="grid_wrapper"
+        resizeDebounce={500}
+      >
+        {createArr(20).map((v, index) => (
+          <GridItem key={v} index={index} />
+        ))}
+      </MasonryInfiniteGrid>
+    </div>
   );
 }
 
