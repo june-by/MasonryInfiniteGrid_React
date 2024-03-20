@@ -6,11 +6,13 @@ import React, {
   useRef,
 } from "react";
 import { useResize } from "../hooks";
+import InfiniteScroll from "./InfiniteScroll";
 
 type Props<T extends keyof JSX.IntrinsicElements> = {
   tagName?: T;
   resizeDebounce?: number;
   fetchNext?: () => Promise<void>;
+  hasMore?: boolean;
   className?: string;
 } & JSX.IntrinsicElements[T];
 
@@ -30,8 +32,11 @@ const MasonryInfiniteGrid = <T extends keyof JSX.IntrinsicElements>({
   children,
   tagName: Wrapper = "div" as T,
   resizeDebounce = 1000,
+  hasMore = false,
+  fetchNext = () => Promise.resolve(),
   ...rest
 }: PropsWithChildren<Props<T>>) => {
+  const isInitialGridRender = useRef(true);
   const gridWrapperRef = useRef<HTMLElement | null>(null);
 
   const calculateGridItemsPos = useCallback(() => {
@@ -53,7 +58,7 @@ const MasonryInfiniteGrid = <T extends keyof JSX.IntrinsicElements>({
     const accHeightPerColumn = Array.from({ length: numOfCol }, () => 0);
 
     // 위치 계산
-    gridItemElements.forEach((gridItemElement) => {
+    gridItemElements.forEach((gridItemElement, idx) => {
       const currentColIdx = accHeightPerColumn.indexOf(
         Math.min(...accHeightPerColumn)
       );
@@ -76,21 +81,27 @@ const MasonryInfiniteGrid = <T extends keyof JSX.IntrinsicElements>({
       return;
     }
 
-    gridWrapperElement.style.visibility = "hidden";
+    if (isInitialGridRender.current)
+      gridWrapperElement.style.visibility = "hidden";
 
     calculateGridItemsPos();
 
-    gridWrapperElement.style.visibility = "";
-  }, [calculateGridItemsPos]);
+    if (isInitialGridRender.current) {
+      gridWrapperElement.style.visibility = "";
+      isInitialGridRender.current = false;
+    }
+  }, [calculateGridItemsPos, gridWrapperRef.current?.children.length]);
 
   useResize(calculateGridItemsPos, resizeDebounce);
 
   const GridWrapperComponent = Wrapper as ElementType;
 
   return (
-    <GridWrapperComponent ref={gridWrapperRef} {...rest}>
-      {children}
-    </GridWrapperComponent>
+    <InfiniteScroll fetchNext={fetchNext} hasMore={hasMore}>
+      <GridWrapperComponent ref={gridWrapperRef} {...rest}>
+        {children}
+      </GridWrapperComponent>
+    </InfiniteScroll>
   );
 };
 
