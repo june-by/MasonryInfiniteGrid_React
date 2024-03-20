@@ -16,7 +16,7 @@ const getNumOfGridColumn = (gridItemWidth: number) => {
   let numOfCol = 0;
   let accWidth = 0;
 
-  while (accWidth < window.innerWidth) {
+  while (accWidth < document.documentElement.clientWidth) {
     accWidth += gridItemWidth;
     numOfCol++;
   }
