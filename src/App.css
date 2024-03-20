@@ -1,6 +1,5 @@
 .grid_wrapper {
-  display: flex;
-  flex-flow: wrap;
+  display: block;
   position: relative;
   padding: 0;
   list-style: none;
@@ -41,4 +40,16 @@
 
 .height_3 {
   height: 300px;
+}
+
+.height_4 {
+  height: 400px;
+}
+
+.height_5 {
+  height: 500px;
+}
+
+.height_6 {
+  height: 600px;
 }
