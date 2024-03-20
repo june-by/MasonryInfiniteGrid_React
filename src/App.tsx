@@ -12,7 +12,7 @@ function App() {
   const [items, setItems] = useState(createArr(20));
 
   const fetchNextItems = useCallback(
-    () => Promise.resolve(setItems((prev) => [...prev, ...createArr(200)])),
+    () => Promise.resolve(setItems((prev) => [...prev, ...createArr(20)])),
     []
   );
 
@@ -23,6 +23,7 @@ function App() {
         className="grid_wrapper"
         resizeDebounce={500}
         fetchNext={fetchNextItems}
+        hasMore={items.length < 100}
       >
         {items.map((v, index) => (
           <GridItem key={v} index={index} />
