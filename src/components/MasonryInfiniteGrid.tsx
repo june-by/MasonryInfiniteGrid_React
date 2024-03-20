@@ -10,6 +10,7 @@ import { useResize } from "../hooks";
 type Props<T extends keyof JSX.IntrinsicElements> = {
   tagName?: T;
   resizeDebounce?: number;
+  fetchNext?: () => Promise<void>;
   className?: string;
 } & JSX.IntrinsicElements[T];
 
