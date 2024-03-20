@@ -16,6 +16,12 @@
   width: 25%;
 }
 
+@media (max-width: 640px) {
+  .grid_item {
+    width: 50%;
+  }
+}
+
 .grid_item_content {
   background: linear-gradient(90deg, #f2f5f9 2%, #fafcff 60%, #f2f5f9 100%);
   padding: 0 8px 16px;
