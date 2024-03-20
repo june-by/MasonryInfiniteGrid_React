@@ -65,6 +65,8 @@ const MasonryInfiniteGrid = <T extends keyof JSX.IntrinsicElements>({
       );
       accHeightPerColumn[currentColIdx] += gridItemElement.clientHeight;
     });
+
+    gridWrapperElement.style.height = `${Math.max(...accHeightPerColumn)}px`;
   }, []);
 
   useLayoutEffect(() => {
