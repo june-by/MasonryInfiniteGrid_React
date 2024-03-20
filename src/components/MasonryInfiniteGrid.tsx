@@ -5,6 +5,7 @@ import React, {
   useLayoutEffect,
   useRef,
 } from "react";
+import { useResize } from "../hooks";
 
 type Props<T extends keyof JSX.IntrinsicElements> = {
   tagName?: T;
@@ -76,6 +77,8 @@ const MasonryInfiniteGrid = <T extends keyof JSX.IntrinsicElements>({
 
     gridWrapperElement.style.visibility = "";
   }, [calculateGridItemsPos]);
+
+  useResize(calculateGridItemsPos);
 
   const GridWrapperComponent = Wrapper as ElementType;
 
