@@ -11,10 +11,13 @@ function createArr(length: number) {
 function App() {
   const [items, setItems] = useState(createArr(20));
 
-  const fetchNextItems = useCallback(
-    () => Promise.resolve(setItems((prev) => [...prev, ...createArr(20)])),
-    []
-  );
+  const fetchNextItems = useCallback(() => {
+    return new Promise((resolve) => {
+      setTimeout(resolve, 2000);
+    }).then(() => {
+      setItems((prev) => [...prev, ...createArr(20)]);
+    });
+  }, []);
 
   return (
     <div className="grid_container">
