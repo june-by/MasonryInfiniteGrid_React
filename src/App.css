@@ -11,6 +11,19 @@
   margin: 0;
 }
 
+.skeleton_wrap {
+  width: 25%;
+  height: 250px;
+}
+
+.skeleton_content {
+  background: gray;
+  padding: 0 8px 16px;
+  background-clip: content-box;
+  width: calc(100% - 16px);
+  height: calc(100% - 16px);
+}
+
 .grid_item {
   animation: placeHolderShimmer 12s linear infinite forwards;
   width: 25%;
