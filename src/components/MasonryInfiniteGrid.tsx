@@ -32,6 +32,14 @@ const getNumOfGridColumn = (gridItemWidth: number) => {
   return numOfCol - 1 || 1;
 };
 
+const getGridItemStyle = (useTransform: boolean, left: number, top: number) => {
+  if (useTransform) {
+    return `position : absolute; transform : translate(${left}px, ${top}px);`;
+  } else {
+    return `position : absolute; left : ${left}px; top : ${top}px`;
+  }
+};
+
 const MasonryInfiniteGrid = React.forwardRef(
   <T extends keyof JSX.IntrinsicElements>(
     {
@@ -71,25 +79,19 @@ const MasonryInfiniteGrid = React.forwardRef(
       const accHeightPerColumn = Array.from({ length: numOfCol }, () => 0);
 
       // 위치 계산
-      gridItemElements.forEach((gridItemElement, idx) => {
+      gridItemElements.forEach((gridItemElement) => {
         const currentColIdx = accHeightPerColumn.indexOf(
           Math.min(...accHeightPerColumn)
         );
-        if (useTransform) {
-          gridItemElement.setAttribute(
-            "style",
-            `position : absolute; transform : translate(${
-              childWidth * currentColIdx
-            }px, ${accHeightPerColumn[currentColIdx]}px);`
-          );
-        } else {
-          gridItemElement.setAttribute(
-            "style",
-            `position : absolute; left : ${
-              childWidth * currentColIdx
-            }px; top : ${accHeightPerColumn[currentColIdx]}px`
-          );
-        }
+
+        gridItemElement.setAttribute(
+          "style",
+          `${getGridItemStyle(
+            useTransform,
+            childWidth * currentColIdx,
+            accHeightPerColumn[currentColIdx]
+          )}`
+        );
 
         accHeightPerColumn[currentColIdx] += gridItemElement.clientHeight;
       });
