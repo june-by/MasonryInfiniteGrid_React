@@ -23,12 +23,12 @@ const getNumOfGridColumn = (gridItemWidth: number) => {
   let numOfCol = 0;
   let accWidth = 0;
 
-  while (accWidth < document.documentElement.clientWidth) {
+  while (accWidth <= document.documentElement.clientWidth) {
     accWidth += gridItemWidth;
     numOfCol++;
   }
 
-  return numOfCol || 1;
+  return numOfCol - 1 || 1;
 };
 
 const MasonryInfiniteGrid = React.forwardRef(
