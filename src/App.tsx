@@ -39,6 +39,7 @@ function App() {
         <MasonryInfiniteGrid
           tagName="ul"
           className="grid_wrapper"
+          useTransform
           resizeDebounce={500}
           fetchNext={fetchNextItems}
           hasMore={items.length < 100}

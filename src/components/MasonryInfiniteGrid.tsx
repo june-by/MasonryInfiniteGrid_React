@@ -16,6 +16,7 @@ type Props<T extends keyof JSX.IntrinsicElements> = {
   fetchNext?: () => Promise<void>;
   skeleton?: JSX.Element;
   hasMore?: boolean;
+  useTransform?: boolean;
   className?: string;
 } & JSX.IntrinsicElements[T];
 
@@ -39,6 +40,7 @@ const MasonryInfiniteGrid = React.forwardRef(
       resizeDebounce = 1000,
       hasMore = false,
       fetchNext = () => Promise.resolve(),
+      useTransform = false,
       skeleton,
       ...rest
     }: PropsWithChildren<Props<T>>,
@@ -73,18 +75,27 @@ const MasonryInfiniteGrid = React.forwardRef(
         const currentColIdx = accHeightPerColumn.indexOf(
           Math.min(...accHeightPerColumn)
         );
+        if (useTransform) {
+          gridItemElement.setAttribute(
+            "style",
+            `position : absolute; transform : translate(${
+              childWidth * currentColIdx
+            }px, ${accHeightPerColumn[currentColIdx]}px);`
+          );
+        } else {
+          gridItemElement.setAttribute(
+            "style",
+            `position : absolute; left : ${
+              childWidth * currentColIdx
+            }px; top : ${accHeightPerColumn[currentColIdx]}px`
+          );
+        }
 
-        gridItemElement.setAttribute(
-          "style",
-          `position : absolute; left : ${childWidth * currentColIdx}px; top : ${
-            accHeightPerColumn[currentColIdx]
-          }px`
-        );
         accHeightPerColumn[currentColIdx] += gridItemElement.clientHeight;
       });
 
       gridWrapperElement.style.height = `${Math.max(...accHeightPerColumn)}px`;
-    }, []);
+    }, [useTransform]);
 
     const renderItems = useCallback(() => {
       if (isFetchingNextLoading && !skeleton) {
