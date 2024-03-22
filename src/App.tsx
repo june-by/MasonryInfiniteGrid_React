@@ -3,6 +3,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import MasonryInfiniteGrid from "./components/MasonryInfiniteGrid";
 import GridItem from "./components/GridItem";
+import Skeleton from "./components/Skeleton";
 
 function createArr(length: number) {
   return Array.from({ length }, (_, idx) => idx + 1);
@@ -11,7 +12,7 @@ function createArr(length: number) {
 function App() {
   const [items, setItems] = useState(createArr(20));
 
-  const fetchNextItems = useCallback(() => {
+  const fetchNextItems = useCallback(async () => {
     return new Promise((resolve) => {
       setTimeout(resolve, 2000);
     }).then(() => {
@@ -27,6 +28,13 @@ function App() {
         resizeDebounce={500}
         fetchNext={fetchNextItems}
         hasMore={items.length < 100}
+        skeleton={
+          <>
+            {createArr(20).map((v, idx) => (
+              <Skeleton key={`skeleton${idx}`} />
+            ))}
+          </>
+        }
       >
         {items.map((v, index) => (
           <GridItem key={v} index={index} />

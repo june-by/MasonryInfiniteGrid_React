@@ -4,6 +4,7 @@ import React, {
   useCallback,
   useLayoutEffect,
   useRef,
+  useState,
 } from "react";
 import { useResize } from "../hooks";
 import InfiniteScroll from "./InfiniteScroll";
@@ -12,6 +13,7 @@ type Props<T extends keyof JSX.IntrinsicElements> = {
   tagName?: T;
   resizeDebounce?: number;
   fetchNext?: () => Promise<void>;
+  skeleton?: JSX.Element;
   hasMore?: boolean;
   className?: string;
 } & JSX.IntrinsicElements[T];
@@ -34,9 +36,11 @@ const MasonryInfiniteGrid = <T extends keyof JSX.IntrinsicElements>({
   resizeDebounce = 1000,
   hasMore = false,
   fetchNext = () => Promise.resolve(),
+  skeleton,
   ...rest
 }: PropsWithChildren<Props<T>>) => {
   const isInitialGridRender = useRef(true);
+  const [isFetchingNextLoading, setIsFetchingNextLoading] = useState(false);
   const gridWrapperRef = useRef<HTMLElement | null>(null);
 
   const calculateGridItemsPos = useCallback(() => {
@@ -76,6 +80,10 @@ const MasonryInfiniteGrid = <T extends keyof JSX.IntrinsicElements>({
   }, []);
 
   useLayoutEffect(() => {
+    if (isFetchingNextLoading && !skeleton) {
+      return;
+    }
+
     const gridWrapperElement = gridWrapperRef.current;
     if (!gridWrapperElement) {
       return;
@@ -90,16 +98,26 @@ const MasonryInfiniteGrid = <T extends keyof JSX.IntrinsicElements>({
       gridWrapperElement.style.visibility = "";
       isInitialGridRender.current = false;
     }
-  }, [calculateGridItemsPos, gridWrapperRef.current?.children.length]);
+  }, [calculateGridItemsPos, isFetchingNextLoading, skeleton]);
 
   useResize(calculateGridItemsPos, resizeDebounce);
 
   const GridWrapperComponent = Wrapper as ElementType;
 
   return (
-    <InfiniteScroll fetchNext={fetchNext} hasMore={hasMore}>
+    <InfiniteScroll
+      fetchNext={() => {
+        if (isFetchingNextLoading) {
+          return;
+        }
+        setIsFetchingNextLoading(true);
+        fetchNext().finally(() => setIsFetchingNextLoading(false));
+      }}
+      hasMore={hasMore}
+    >
       <GridWrapperComponent ref={gridWrapperRef} {...rest}>
         {children}
+        {isFetchingNextLoading && skeleton}
       </GridWrapperComponent>
     </InfiniteScroll>
   );
