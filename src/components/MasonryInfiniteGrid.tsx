@@ -100,10 +100,6 @@ const MasonryInfiniteGrid = React.forwardRef(
     }, [useTransform]);
 
     const renderItems = useCallback(() => {
-      if (isFetchingNextLoading && !skeleton) {
-        return;
-      }
-
       const gridWrapperElement = gridWrapperRef.current;
       if (!gridWrapperElement) {
         return;
@@ -118,11 +114,11 @@ const MasonryInfiniteGrid = React.forwardRef(
         gridWrapperElement.style.visibility = "";
         isInitialGridRender.current = false;
       }
-    }, [calculateGridItemsPos, isFetchingNextLoading, skeleton]);
+    }, [calculateGridItemsPos]);
 
     useLayoutEffect(() => {
       renderItems();
-    }, [renderItems]);
+    }, [renderItems, children, isFetchingNextLoading]);
 
     useResize(calculateGridItemsPos, resizeDebounce);
 
