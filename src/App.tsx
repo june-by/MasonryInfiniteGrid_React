@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import MasonryInfiniteGrid from "./components/MasonryInfiniteGrid";
@@ -16,6 +16,7 @@ export function createArr(length: number, groupNo?: number) {
 
 function App() {
   const [currentGroupNo, setCurrentGroupNo] = useState(1);
+  const [isGridRenderComplete, setIsGridRenderComplete] = useState(false);
   const [items, setItems] = useState(createArr(20, currentGroupNo));
 
   const fetchNextItems = useCallback(async () => {
@@ -28,9 +29,14 @@ function App() {
 
   const changeItems = () => {
     const nextGroupNo = currentGroupNo + 1;
+    setIsGridRenderComplete(false);
     setCurrentGroupNo(nextGroupNo);
     setItems(createArr(20, nextGroupNo));
   };
+
+  useEffect(() => {
+    console.log("isGridRenderComplete : ", isGridRenderComplete);
+  }, [isGridRenderComplete]);
 
   return (
     <>
@@ -43,6 +49,7 @@ function App() {
           resizeDebounce={500}
           fetchNext={fetchNextItems}
           hasMore={items.length < 100}
+          onGridRenderComplete={() => setIsGridRenderComplete(true)}
           skeleton={<Skeleton />}
         >
           {items.map((v, index) => (

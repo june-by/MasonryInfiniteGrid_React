@@ -17,6 +17,7 @@ type Props<T extends keyof JSX.IntrinsicElements> = {
   skeleton?: JSX.Element;
   hasMore?: boolean;
   useTransform?: boolean;
+  onGridRenderComplete?: () => void;
   className?: string;
 } & JSX.IntrinsicElements[T];
 
@@ -48,6 +49,7 @@ const MasonryInfiniteGrid = React.forwardRef(
       resizeDebounce = 1000,
       hasMore = false,
       fetchNext = () => Promise.resolve(),
+      onGridRenderComplete = () => {},
       useTransform = false,
       skeleton,
       ...rest
@@ -97,7 +99,9 @@ const MasonryInfiniteGrid = React.forwardRef(
       });
 
       gridWrapperElement.style.height = `${Math.max(...accHeightPerColumn)}px`;
-    }, [useTransform]);
+
+      onGridRenderComplete();
+    }, [useTransform, onGridRenderComplete]);
 
     const renderItems = useCallback(() => {
       const gridWrapperElement = gridWrapperRef.current;
